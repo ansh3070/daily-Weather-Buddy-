@@ -273,19 +273,20 @@
         });
 
         // 3. Voting Logic linking to your Google Script
-        // 👇 PASTE YOUR NEW GOOGLE SCRIPT URL HERE 👇
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_ACTUAL_SCRIPT_ID_HERE/exec";
+        // 👇 PASTE YOUR GOOGLE SCRIPT URL HERE 👇
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTzRnEik-_fim1LsDDY_HNu2w0NPZEOszDCuYHO2rxGImfkUT8YpluZEGJYVLPwGqX/exec";
 
         async function submitVote(voteResult) {
             const promptDiv = document.getElementById('vote-prompt');
             const heading = document.getElementById('vote-heading');
-            
+            const thanksDiv = document.getElementById('vote-thanks');
+
             // Set loading state visually
             heading.innerText = "Saving your vote...";
             promptDiv.style.opacity = '0.5';
             promptDiv.style.pointerEvents = 'none';
 
-            // Use URLSearchParams for reliable data transfer to Google Apps Script
+            // THE FIX: Using URLSearchParams to perfectly format data for Google Sheets
             const params = new URLSearchParams();
             params.append("vote", voteResult);
 
@@ -295,8 +296,6 @@
                     body: params,
                     mode: "no-cors",
                 });
-                // Since mode is no-cors, we won't be able to read the response. 
-                // We just assume success if no network error occurred.
                 showThankYou();
             } catch (error) {
                 console.error("Error submitting vote:", error);
